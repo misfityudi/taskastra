@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <main className="bg-slate-600 h-screen flex flex-col">
       <header className="row-start-1 flex flex-row justify-between align-middle items-center bg-slate-700 h-16 px-4">
-        <span className="font-semibold text-xl">TaskAstra</span>
+        <span className="font-semibold text-xl">Taskastra</span>
         <AuthButton />
       </header>
       <div className="p-4 h-screen-h-16 overflow-clip">

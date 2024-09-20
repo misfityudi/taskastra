@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { User as NextAuthUser } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "@/lib/mongodb"; // Assuming you have a mongodb connection utility
 import { User } from "@/lib/types/user"; // Importing the existing User type
@@ -30,7 +30,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user }: any) {
+    async signIn({ user }: { user: NextAuthUser }) {
       const client = await clientPromise;
       const db = client.db("taskastra"); // Use your actual database name
       const usersCollection = db.collection<User>("users");

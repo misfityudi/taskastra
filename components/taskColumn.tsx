@@ -5,10 +5,9 @@ import TaskItem from "./taskItem";
 
 interface TaskColumnProps {
   state: TaskState;
-  titleColor: string;
 }
 
-const TaskColumn: React.FC<TaskColumnProps> = ({ state, titleColor }) => {
+const TaskColumn: React.FC<TaskColumnProps> = ({ state }) => {
   const tasks = useTaskStore((store) => {
     if (state === TaskState.TODO) {
       return store.todoTasks;
@@ -21,7 +20,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ state, titleColor }) => {
 
   return (
     <div className="task-column bg-slate-800 h-full border-2 border-slate-900">
-      <p className={`text-xl p-4 bg-slate-900 text-${titleColor}-500`}>
+      <p className={`text-xl p-4 bg-slate-900 text-blue-500`}>
         {TaskState[state]}
       </p>
       <div>

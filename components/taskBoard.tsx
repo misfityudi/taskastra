@@ -48,9 +48,9 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ userId }) => {
       />
 
       <div className="flex-grow w-full grid grid-cols-3 gap-4 mx-auto text-white">
-        <TaskColumn state={TaskState.TODO} titleColor="red" />
-        <TaskColumn state={TaskState.INPROGRESS} titleColor="yellow" />
-        <TaskColumn state={TaskState.DONE} titleColor="green" />
+        <TaskColumn state={TaskState.TODO} />
+        <TaskColumn state={TaskState.INPROGRESS} />
+        <TaskColumn state={TaskState.DONE} />
       </div>
     </div>
   );

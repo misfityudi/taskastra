@@ -10,10 +10,8 @@ interface TaskBoardProps {
 
 const TaskBoard: React.FC<TaskBoardProps> = ({ userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addTask, updateTask } = useTaskStore((state) => ({
-    addTask: state.addTask,
-    updateTask: state.updateTask,
-  }));
+  const addTask = useTaskStore((state) => state.addTask);
+  const updateTask = useTaskStore((state) => state.updateTask);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);

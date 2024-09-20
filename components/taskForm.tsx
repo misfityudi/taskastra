@@ -31,7 +31,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ userId, onClose, onSubmit }) => {
     }
 
     const newTask: Task = {
-      id: `${Date.now() + Math.floor(Math.random() * 10000)}`, // Generate a unique ID
+      _id: `${Date.now() + Math.floor(Math.random() * 10000)}`, // Generate a unique ID
       content,
       state,
       userId,

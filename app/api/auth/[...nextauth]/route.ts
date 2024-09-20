@@ -62,7 +62,7 @@ export const authOptions = {
 
       return true; // Allow sign-in
     },
-    async session({ session, token }: any) {
+    async session({ session }: any) {
       const client = await clientPromise;
       const db = client.db("taskastra");
       const usersCollection = db.collection<User>("users");
@@ -87,7 +87,7 @@ export const authOptions = {
       }
       return token;
     },
-    async redirect({ url, baseUrl }: any) {
+    async redirect({ baseUrl }: any) {
       return baseUrl;
     },
   },

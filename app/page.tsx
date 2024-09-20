@@ -17,8 +17,7 @@ export default function Home() {
         <span className="font-semibold text-xl">TaskAstra</span>
         <AuthButton />
       </header>
-      <div className="flex flex-col">
-        <div className="row-start-1 flex flex-row justify-between align-middle items-center h-16 px-4"></div>
+      <div className="flex flex-col p-4">
         {session?.user ? <TaskBoard userId={session?.user.id} /> : null}
       </div>
     </main>

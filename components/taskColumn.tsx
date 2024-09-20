@@ -1,39 +1,32 @@
 import React from "react";
-import { Task, TaskState } from "@/lib/types/task";
-import TaskItem from "./taskItem";
+import { TaskState, Task } from "@/lib/types/task";
 import { useTaskStore } from "@/lib/stores/task";
+import TaskItem from "./taskItem";
 
 interface TaskColumnProps {
   state: TaskState;
-  onEdit: (task: Task) => void;
+  titleColor: string;
 }
 
-const TaskColumn: React.FC<TaskColumnProps> = ({ state, onEdit }) => {
+const TaskColumn: React.FC<TaskColumnProps> = ({ state, titleColor }) => {
   const tasks = useTaskStore((store) => {
-    switch (state) {
-      case TaskState.TODO:
-        return store.todoTasks;
-      case TaskState.INPROGRESS:
-        return store.ongoingTasks;
-      case TaskState.DONE:
-        return store.completedTasks;
-      default:
-        return [];
+    if (state === TaskState.TODO) {
+      return store.todoTasks;
+    } else if (state === TaskState.INPROGRESS) {
+      return store.ongoingTasks;
+    } else {
+      return store.completedTasks;
     }
   });
 
   return (
-    <div className="bg-slate-700 m-5 flex flex-col border-2 border-slate-900">
-      <p className="text-start px-4 py-2 bg-slate-800 font-semibold text-red-500">
-        {state === TaskState.TODO
-          ? "TODO"
-          : state === TaskState.INPROGRESS
-          ? "IN PROGRESS"
-          : "DONE"}
+    <div className="task-column bg-slate-800 h-full border-2 border-slate-900">
+      <p className={`text-xl p-4 bg-slate-900 text-${titleColor}-500`}>
+        {TaskState[state]}
       </p>
-      <div className="flex-grow flex flex-col gap-5 justify-start items-center p-5">
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} onEdit={onEdit} />
+      <div>
+        {tasks.map((task: Task) => (
+          <TaskItem key={task.id} task={task} />
         ))}
       </div>
     </div>

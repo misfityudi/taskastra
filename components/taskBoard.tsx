@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTaskStore } from "@/lib/stores/task";
 import TaskColumn from "./taskColumn";
-import AddTaskModal from "./addTaskModal";
 import { TaskState } from "@/lib/types/task";
 
 interface TaskBoardProps {
@@ -14,7 +13,6 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ userId }) => {
   const handleOnDrop = (e: React.DragEvent, targetState: TaskState) => {
     const taskId = e.dataTransfer.getData("taskId");
 
-    // Update the task state to reflect the new column
     updateTask(taskId, {
       state: targetState,
       updatedAt: Date.now().toString(),

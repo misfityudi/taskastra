@@ -1,4 +1,3 @@
-// components/TaskModal.tsx
 import React from "react";
 import { Task, TaskState } from "@/lib/types/task";
 

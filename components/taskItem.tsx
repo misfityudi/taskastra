@@ -25,7 +25,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
 
   const handleEditTask = (updatedTask: Task) => {
     const { id, ...updatedFields } = updatedTask;
-    // Call updateTask with the task id and the updated fields
     updateTask(id, updatedFields);
     handleCloseEditModal();
   };
@@ -61,8 +60,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           Delete
         </button>
       </div>
-
-      {/* Task Modal for Editing Task */}
       <EditTaskModal
         task={task}
         isOpen={isEditModalOpen}

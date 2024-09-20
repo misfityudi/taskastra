@@ -1,4 +1,3 @@
-// lib/stores/task.ts
 import { create } from "zustand";
 import { Task, TaskState } from "@/lib/types/task";
 
@@ -42,7 +41,6 @@ const useTaskStore = create<TaskStore>((set) => ({
   completedTasks: [],
 }));
 
-// Add computed tasks directly as derived state
 const useComputedTasks = () => {
   const { tasks } = useTaskStore();
   const todoTasks = tasks.filter((task) => task.state === TaskState.TODO);

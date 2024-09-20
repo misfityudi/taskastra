@@ -1,21 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
-
-enum TaskState {
-  TODO = "TODO",
-  INPROGRESS = "INPROGRESS",
-  DONE = "DONE",
-}
-
-interface Task {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  content: string;
-  state: TaskState;
-  userId: string;
-}
+import { TaskState, Task } from "@/lib/types/task";
 
 let tasks: Task[] = [];
 

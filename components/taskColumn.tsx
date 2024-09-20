@@ -1,6 +1,5 @@
 import React from "react";
-import { TaskState, Task } from "@/lib/types/task";
-import { useTaskStore, useComputedTasks } from "@/lib/stores/task";
+import { Task } from "@/lib/types/task";
 import TaskItem from "./taskItem";
 
 interface TaskColumnProps {
@@ -10,8 +9,6 @@ interface TaskColumnProps {
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({ title, tasks, onDrop }) => {
-  // const { todoTasks, ongoingTasks, completedTasks } = useComputedTasks();
-
   const handleOnDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };

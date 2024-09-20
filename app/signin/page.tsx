@@ -1,19 +1,34 @@
 "use client";
+import Image from "next/image";
 import AuthButton from "@/components/authButton";
 
 export default function SignIn() {
   return (
-    <main className="min-h-screen bg-slate-600 grid grid-rows-[64px_1fr] w-full">
-      <header className="row-start-1 flex flex-row justify-between align-middle items-center bg-slate-700 h-16 px-4">
-        <span className="font-semibold text-xl">Taskastra</span>
-      </header>
-      <main className="m-auto w-96 h-72 rounded-lg bg-slate-700 p-8 items-center flex flex-col justify-around">
-        <div className="flex flex-col text-center gap-2">
-          <span className="font-semibold text-4xl">Taskastra</span>
-          <span className="font-medium text-sm">Unlocking tasks!</span>
+    <main className="h-screen bg-slate-700 w-full relative">
+      <div className="font-semibold text-3xl text-blue-700 absolute text-center top-8 left-12">
+        Taskastra
+      </div>
+      <div className="items-center flex flex-row w-full h-full">
+        <div className="w-1/2 h-full">
+          <Image
+            src="/images/login.png"
+            alt="image"
+            width={512}
+            height={512}
+            objectFit="contain"
+            className="w-auto h-full object-cover"
+          />
         </div>
-        <AuthButton />
-      </main>
+        <div className="w-1/2 flex flex-col text-center bg-slate-100 items-center justify-center align-middle gap-2 border h-full">
+          <span className="font-semibold text-3xl text-blue-700">
+            Taskastra
+          </span>
+          <span className="font-medium text-sm text-slate-400 mb-8">
+            It all starts with a to-do!
+          </span>
+          <AuthButton />
+        </div>
+      </div>
     </main>
   );
 }

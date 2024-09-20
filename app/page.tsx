@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <main className="bg-slate-600 h-screen flex flex-col">
       <header className="row-start-1 flex flex-row justify-between align-middle items-center bg-slate-700 h-16 px-4">
-        <span className="font-semibold text-xl">Taskastra</span>
+        <span className="font-semibold text-3xl text-slate-400">Taskastra</span>
         <AuthButton />
       </header>
       <div className="p-4 h-screen-h-16 overflow-clip">
@@ -54,9 +54,9 @@ export default function Home() {
       </div>
       <div
         onClick={handleOpenModal}
-        className="mb-4 bg-blue-500 text-white rounded-md px-2 py-2 cursor-pointer text-center w-40 absolute bottom-0 right-8"
+        className="mb-4 bg-blue-700 text-slate-200 rounded-md px-2 py-2 cursor-pointer text-center w-40 absolute bottom-8 right-12"
       >
-        New Task
+        Add New
       </div>
     </main>
   );

@@ -18,7 +18,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ title, tasks, onDrop }) => {
 
   return (
     <div
-      className="bg-slate-200 border-2 border-slate-400 h-full flex flex-col"
+      className="bg-slate-200 border-2 border-slate-400 h-screen-h-20 flex flex-col"
       onDragOver={handleOnDragOver}
       onDrop={onDrop}
     >

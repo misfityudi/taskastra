@@ -14,6 +14,7 @@ const config: Config = {
       },
       height: {
         "screen-h-16": "calc(100vh - 4rem)", // Assuming 4rem = h-16
+        "screen-h-20": "calc(100vh - 5rem)", // Assuming 4rem = h-16
       },
     },
   },

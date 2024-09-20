@@ -32,7 +32,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
 
   return (
     <div
-      className="task-item p-4 border border-slate-400 rounded m-4 bg-slate-300 text-white flex flex-col"
+      className="p-4 border border-slate-400 rounded m-4 bg-slate-300 text-white flex flex-col"
       draggable
       onDragStart={handleOnDragStart}
     >

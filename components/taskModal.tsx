@@ -14,7 +14,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onClose,
   onSubmit,
   task,
-  userId,
+  userId
 }) => {
   const [content, setContent] = React.useState(task ? task.content : "");
   const [state, setState] = React.useState(task ? task.state : TaskState.TODO);
@@ -29,10 +29,10 @@ const TaskModal: React.FC<TaskModalProps> = ({
     }
 
     const newTask: Task = {
-      id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
+      _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
       content,
       state,
-      userId: userId,
+      userId,
       createdAt: Date.now().toString(),
       updatedAt: Date.now().toString(),
     };

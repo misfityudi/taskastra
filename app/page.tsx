@@ -22,7 +22,7 @@ export default function Home() {
   };
 
   const handleAddTask = (newTask: {
-    id: string;
+    _id: string;
     content: string;
     state: TaskState;
     userId: string;
@@ -42,7 +42,7 @@ export default function Home() {
       <div className="py-1 px-3 h-screen-h-16 overflow-clip">
         {session?.user && (
           <>
-            <TaskBoard userId={session?.user.id} />{" "}
+            <TaskBoard />
             <AddTaskModal
               userId={session.user.id}
               isOpen={isModalOpen}

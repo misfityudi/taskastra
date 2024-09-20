@@ -12,7 +12,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   const updateTask = useTaskStore((state) => state.updateTask);
 
   const handleOnDragStart = (e: React.DragEvent) => {
-    e.dataTransfer.setData("taskId", task.id);
+    e.dataTransfer.setData("taskId", task._id.toString());
   };
 
   const handleOpenEditModal = () => {
@@ -24,8 +24,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   };
 
   const handleEditTask = (updatedTask: Task) => {
-    const { id, ...updatedFields } = updatedTask;
-    updateTask(id, updatedFields);
+    const { _id, ...updatedFields } = updatedTask;
+    updateTask(_id, updatedFields);
     handleCloseEditModal();
   };
 

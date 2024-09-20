@@ -24,7 +24,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ title, tasks, onDrop }) => {
       </p>
       <div className="flex-grow flex flex-col overflow-y-auto">
         {tasks.map((task: Task) => (
-          <TaskItem key={task.id} task={task} />
+          <TaskItem key={task._id.toString()} task={task} />
         ))}
       </div>
     </div>

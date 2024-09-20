@@ -5,10 +5,10 @@ export enum TaskState {
 }
 
 export interface Task {
-  id: string;
+  _id: string;
   content: string;
   state: TaskState;
   userId: string;
-  createdAt: string; // epoch time as string
-  updatedAt: string; // epoch time as string
+  createdAt: string;
+  updatedAt: string;
 }

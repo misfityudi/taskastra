@@ -3,10 +3,10 @@ import { Task, TaskState } from "@/lib/types/task";
 
 interface TaskStore {
   tasks: Task[];
-  addTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => void;
+  addTask: (task: Omit<Task, "_id" | "createdAt" | "updatedAt">) => void;
   updateTask: (
-    id: string,
-    updatedFields: Partial<Omit<Task, "id" | "createdAt">>
+    _id: string,
+    updatedFields: Partial<Omit<Task, "_id" | "createdAt">>
   ) => void;
   deleteTask: (id: string) => void;
   todoTasks: Task[];
@@ -20,7 +20,7 @@ const useTaskStore = create<TaskStore>((set) => ({
     set((state) => {
       const newTask = {
         ...task,
-        id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
+        _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
         createdAt: Date.now().toString(),
         updatedAt: Date.now().toString(),
       };
@@ -29,12 +29,12 @@ const useTaskStore = create<TaskStore>((set) => ({
   updateTask: (id, updatedFields) =>
     set((state) => ({
       tasks: state.tasks.map((task) =>
-        task.id === id ? { ...task, ...updatedFields } : task
+        task._id === id ? { ...task, ...updatedFields } : task
       ),
     })),
   deleteTask: (id) =>
     set((state) => ({
-      tasks: state.tasks.filter((task) => task.id !== id),
+      tasks: state.tasks.filter((task) => task._id !== id),
     })),
   todoTasks: [],
   ongoingTasks: [],

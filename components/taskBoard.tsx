@@ -3,11 +3,7 @@ import { useTaskStore } from "@/lib/stores/task";
 import TaskColumn from "./taskColumn";
 import { TaskState } from "@/lib/types/task";
 
-interface TaskBoardProps {
-  userId: string;
-}
-
-const TaskBoard: React.FC<TaskBoardProps> = ({ userId }) => {
+const TaskBoard: React.FC = () => {
   const { tasks, updateTask } = useTaskStore();
 
   const handleOnDrop = (e: React.DragEvent, targetState: TaskState) => {

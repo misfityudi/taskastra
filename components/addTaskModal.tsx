@@ -27,12 +27,12 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     }
 
     const newTask: Task = {
-      id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
       content,
       state,
       userId,
       createdAt: Date.now().toString(),
       updatedAt: Date.now().toString(),
+      _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
     };
 
     onSubmit(newTask);

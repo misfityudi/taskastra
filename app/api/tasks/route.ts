@@ -20,10 +20,10 @@ export async function POST(request: Request) {
   }
   const { content } = await request.json();
   const newTask: Task = {
-    id: Date.now().toString(),
+    _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
     content,
     state: TaskState.TODO,
-    userId: session.user.id,
+    userId: session.user.id as string,
     createdAt: Date.now().toString(),
     updatedAt: Date.now().toString(),
   };
@@ -38,7 +38,7 @@ export async function PUT(request: Request) {
   }
   const { id, content, state } = await request.json();
   const taskIndex = tasks.findIndex(
-    (t) => t.id === id && t.userId === session.user.id
+    (t) => t._id === id && t.userId.toString() === session.user.id
   );
   if (taskIndex === -1) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
@@ -54,7 +54,9 @@ export async function DELETE(request: Request) {
   }
   const { id } = await request.json();
   const initialLength = tasks.length;
-  tasks = tasks.filter((t) => !(t.id === id && t.userId === session.user.id));
+  tasks = tasks.filter(
+    (t) => !(t._id === id && t.userId.toString() === session.user.id)
+  );
   if (tasks.length === initialLength) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
   }

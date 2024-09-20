@@ -12,6 +12,9 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      height: {
+        "screen-h-16": "calc(100vh - 4rem)", // Assuming 4rem = h-16
+      },
     },
   },
   plugins: [],

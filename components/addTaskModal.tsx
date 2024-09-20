@@ -53,12 +53,12 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Task content"
-            className="m-2 p-2 bg-slate-800 rounded-md"
+            className="m-2 p-2 bg-slate-800 rounded-md !outline-none"
           />
           <select
             value={state}
             onChange={(e) => setState(e.target.value as TaskState)}
-            className="p-2 m-2 bg-slate-800 text-slate-300 rounded-md"
+            className="p-2 m-2 bg-slate-800 text-slate-300 rounded-md !outline-none"
           >
             <option value={TaskState.TODO}>TODO</option>
             <option value={TaskState.INPROGRESS}>IN PROGRESS</option>

@@ -1,4 +1,7 @@
-import NextAuth, { User as NextAuthUser } from "next-auth";
+import NextAuth, {
+  User as NextAuthUser,
+  Session as NextAuthSession,
+} from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "@/lib/mongodb"; // Assuming you have a mongodb connection utility
 import { User } from "@/lib/types/user"; // Importing the existing User type
@@ -56,13 +59,13 @@ export const authOptions = {
         // Update the existing user with new login timestamp
         await usersCollection.updateOne(
           { email: user.email },
-          { $set: { updatedAt: new Date().toISOString() } }
+          { $set: { updatedAt: Date.now().toString() } }
         );
       }
 
       return true; // Allow sign-in
     },
-    async session({ session }: any) {
+    async session({ session }: { session: NextAuthSession }) {
       const client = await clientPromise;
       const db = client.db("taskastra");
       const usersCollection = db.collection<User>("users");

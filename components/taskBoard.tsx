@@ -1,70 +1,61 @@
-"use client";
-import { useTaskStore, TaskState } from "@/lib/stores/task";
+import React, { useState } from "react";
+import { useTaskStore } from "@/lib/stores/task";
 import TaskColumn from "./taskColumn";
+import TaskModal from "./taskModal";
+import { TaskState } from "@/lib/types/task";
 
-export default function TaskBoard() {
-  const { todoTasks, ongoingTasks, completedTasks, updateTask } = useTaskStore(
-    (state) => ({
-      todoTasks: state.todoTasks(),
-      ongoingTasks: state.ongoingTasks(),
-      completedTasks: state.completedTasks(),
-      updateTask: state.updateTask,
-    })
-  );
+interface TaskBoardProps {
+  userId: string;
+}
 
-  function handleOnDragOver(e: React.DragEvent) {
-    e.preventDefault();
-  }
+const TaskBoard: React.FC<TaskBoardProps> = ({ userId }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { addTask, updateTask } = useTaskStore((state) => ({
+    addTask: state.addTask,
+    updateTask: state.updateTask,
+  }));
 
-  function handleOnDrag(e: React.DragEvent, taskId: string) {
-    e.dataTransfer.setData("taskId", taskId);
-  }
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-  function handleOnDrop(e: React.DragEvent, targetState: TaskState) {
-    const taskId = e.dataTransfer.getData("taskId");
-    const allTasks = [...todoTasks, ...ongoingTasks, ...completedTasks];
-    const task = allTasks.find((task) => task.id === taskId);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
-    if (task && task.state !== targetState) {
-      const updatedFields = {
-        state: targetState,
-        updatedAt: Date.now().toString(),
-      };
-      updateTask(task.id, updatedFields);
-    }
-  }
+  const handleAddTask = (newTask: {
+    id: string;
+    content: string;
+    state: TaskState;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+  }) => {
+    addTask(newTask);
+    handleCloseModal();
+  };
 
   return (
     <div className="flex flex-col text-white">
+      <button
+        onClick={handleOpenModal}
+        className="mb-4 bg-blue-500 text-white rounded-md px-4 py-2"
+      >
+        Add Task
+      </button>
       <div className="flex-grow w-full grid grid-cols-3 mx-auto text-white">
-        <TaskColumn
-          title="TODO"
-          tasks={todoTasks}
-          targetState={TaskState.TODO}
-          onDrop={(e) => handleOnDrop(e, TaskState.TODO)}
-          onDragOver={handleOnDragOver}
-          onDragStart={handleOnDrag}
-          titleColor="red"
-        />
-        <TaskColumn
-          title="IN PROGRESS"
-          tasks={ongoingTasks}
-          targetState={TaskState.INPROGRESS}
-          onDrop={(e) => handleOnDrop(e, TaskState.INPROGRESS)}
-          onDragOver={handleOnDragOver}
-          onDragStart={handleOnDrag}
-          titleColor="yellow"
-        />
-        <TaskColumn
-          title="DONE"
-          tasks={completedTasks}
-          targetState={TaskState.DONE}
-          onDrop={(e) => handleOnDrop(e, TaskState.DONE)}
-          onDragOver={handleOnDragOver}
-          onDragStart={handleOnDrag}
-          titleColor="green"
-        />
+        <TaskColumn state={TaskState.TODO} onEdit={() => updateTask} />
+        <TaskColumn state={TaskState.INPROGRESS} onEdit={() => updateTask} />
+        <TaskColumn state={TaskState.DONE} onEdit={() => updateTask} />
       </div>
+      <TaskModal
+        userId={userId}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleAddTask}
+      />
     </div>
   );
-}
+};
+
+export default TaskBoard;

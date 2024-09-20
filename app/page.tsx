@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react";
 import AuthButton from "@/components/authButton";
 import TaskBoard from "@/components/taskBoard";
-import TaskModal from "@/components/taskModal";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,10 +18,8 @@ export default function Home() {
         <AuthButton />
       </header>
       <div className="flex flex-col">
-        <div className="row-start-1 flex flex-row justify-between align-middle items-center h-16 px-4">
-          <TaskModal userId={session?.user.id as string} />
-        </div>
-        <TaskBoard />
+        <div className="row-start-1 flex flex-row justify-between align-middle items-center h-16 px-4"></div>
+        {session?.user ? <TaskBoard userId={session?.user.id} /> : null}
       </div>
     </main>
   );

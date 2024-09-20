@@ -1,7 +1,8 @@
-"use client";
+// components/TaskForm.tsx
 import React, { useState } from "react";
-import { useTaskStore, TaskState } from "@/lib/stores/task";
 import { z } from "zod";
+import { TaskState, Task } from "@/lib/types/task";
+import { useTaskStore } from "@/lib/stores/task";
 
 // Zod schema for task validation
 const taskSchema = z.object({
@@ -10,19 +11,19 @@ const taskSchema = z.object({
   userId: z.string().nonempty("User ID cannot be empty"),
 });
 
-const TaskForm: React.FC<{ userId: string; onClose: () => void }> = ({
-  userId,
-  onClose,
-}) => {
-  const addTask = useTaskStore((state) => state.addTask); // Add task from store
+interface TaskFormProps {
+  userId: string;
+  onClose: () => void;
+  onSubmit: (task: Task) => void;
+}
+
+const TaskForm: React.FC<TaskFormProps> = ({ userId, onClose, onSubmit }) => {
   const [content, setContent] = useState("");
   const [state, setState] = useState<TaskState>(TaskState.TODO);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validate form inputs
     const validationResult = taskSchema.safeParse({ content, state, userId });
 
     if (!validationResult.success) {
@@ -32,21 +33,25 @@ const TaskForm: React.FC<{ userId: string; onClose: () => void }> = ({
       return;
     }
 
-    // If valid, add task to the store
-    addTask({ content, state, userId });
-    onClose(); // Close the modal after adding the task
+    const newTask: Task = {
+      id: `${Date.now() + Math.floor(Math.random() * 10000)}`, // Generate a unique ID
+      content,
+      state,
+      userId,
+      createdAt: Date.now().toString(),
+      updatedAt: Date.now().toString(),
+    };
 
-    // Reset form fields
-    setContent("");
+    onSubmit(newTask); // Pass the new task to the parent
+    setContent(""); // Reset form fields
     setState(TaskState.TODO);
-    setError(null); // Clear any errors
+    setError(null); // Clear error
+    onClose(); // Close the modal
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 z-10">
-      <p className="text-xl font-semibold text-slate-200">New task:</p>
-
-      {/* Task Content Field */}
+      <p className="text-xl font-semibold text-slate-200">New Task:</p>
       <div className="mt-4">
         <label
           htmlFor="content"
@@ -64,7 +69,6 @@ const TaskForm: React.FC<{ userId: string; onClose: () => void }> = ({
         />
       </div>
 
-      {/* Task State Field */}
       <div className="mt-4">
         <label
           htmlFor="state"
@@ -84,14 +88,11 @@ const TaskForm: React.FC<{ userId: string; onClose: () => void }> = ({
         </select>
       </div>
 
-      {/* Error Message */}
-      {error && <span className="text-red-500 text-sm">{error}</span>}
-
-      {/* Submit Button */}
-      <div className="flex justify-center mt-4">
+      <div className="flex flex-col mt-2">
+        {error && <span className="text-red-500 text-sm">{error}</span>}
         <button
           type="submit"
-          className="bg-blue-500 text-white rounded-md px-4 py-2"
+          className="mt-2 bg-blue-500 text-white rounded-md px-4 py-2"
         >
           Add Task
         </button>

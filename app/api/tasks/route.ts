@@ -10,8 +10,8 @@ enum TaskState {
 
 interface Task {
   id: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
   content: string;
   state: TaskState;
   userId: string;
@@ -38,6 +38,8 @@ export async function POST(request: Request) {
     content,
     state: TaskState.TODO,
     userId: session.user.id,
+    createdAt: Date.now().toString(),
+    updatedAt: Date.now().toString(),
   };
   tasks.push(newTask);
   return NextResponse.json(newTask);

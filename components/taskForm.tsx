@@ -1,10 +1,7 @@
-// components/TaskForm.tsx
 import React, { useState } from "react";
 import { z } from "zod";
 import { TaskState, Task } from "@/lib/types/task";
-import { useTaskStore } from "@/lib/stores/task";
 
-// Zod schema for task validation
 const taskSchema = z.object({
   content: z.string().min(1, "Content cannot be empty"),
   state: z.enum([TaskState.TODO, TaskState.INPROGRESS, TaskState.DONE]),
@@ -42,11 +39,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ userId, onClose, onSubmit }) => {
       updatedAt: Date.now().toString(),
     };
 
-    onSubmit(newTask); // Pass the new task to the parent
-    setContent(""); // Reset form fields
+    onSubmit(newTask);
+    setContent("");
     setState(TaskState.TODO);
-    setError(null); // Clear error
-    onClose(); // Close the modal
+    setError(null);
+    onClose();
   };
 
   return (

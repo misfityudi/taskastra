@@ -6,7 +6,7 @@ interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (task: Task) => void;
-  task?: Task | null; // Make task optional for editing
+  task?: Task | null;
   userId: string;
 }
 
@@ -24,7 +24,6 @@ const TaskModal: React.FC<TaskModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic validation
     if (!content.trim()) {
       setError("Content is required");
       return;
@@ -34,16 +33,16 @@ const TaskModal: React.FC<TaskModalProps> = ({
       id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
       content,
       state,
-      userId: userId, // Replace with actual user ID logic
+      userId: userId,
       createdAt: Date.now().toString(),
       updatedAt: Date.now().toString(),
     };
 
     onSubmit(newTask);
-    setContent(""); // Reset content
-    setState(TaskState.TODO); // Reset state
-    setError(null); // Clear error
-    onClose(); // Close modal
+    setContent("");
+    setState(TaskState.TODO);
+    setError(null);
+    onClose();
   };
 
   return (

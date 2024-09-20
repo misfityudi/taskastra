@@ -7,12 +7,12 @@ export default function AuthButton() {
   if (session) {
     return (
       <div className="gap-2 flex flex-row h-16 items-center">
-        <span className="font-semibold mr-4 text-slate-400">
+        <span className="font-semibold mr-4 text-slate-700">
           {session.user?.name}
         </span>
         <div
           onClick={() => signOut()}
-          className="rounded px-4 py-2 bg-red-700 border-2 border-slate-900 text-slate-400 items-center text-center cursor-pointer"
+          className="rounded px-4 py-2 bg-red-600 border-2 border-slate-300 text-slate-300 items-center text-center cursor-pointer"
         >
           Sign out
         </div>

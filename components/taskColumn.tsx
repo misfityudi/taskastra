@@ -18,11 +18,13 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ title, tasks, onDrop }) => {
 
   return (
     <div
-      className="bg-slate-800 border-2 border-slate-900 h-full flex flex-col"
+      className="bg-slate-200 border-2 border-slate-400 h-full flex flex-col"
       onDragOver={handleOnDragOver}
       onDrop={onDrop}
     >
-      <p className={`text-xl p-4 bg-slate-900 text-blue-500`}>{title}</p>
+      <p className={`text-xl p-4 bg-slate-300 font-semibold text-blue-700`}>
+        {title}
+      </p>
       <div className="flex-grow flex flex-col overflow-y-auto">
         {tasks.map((task: Task) => (
           <TaskItem key={task.id} task={task} />

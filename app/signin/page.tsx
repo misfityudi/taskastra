@@ -15,7 +15,6 @@ export default function SignIn() {
             alt="image"
             width={512}
             height={512}
-            objectFit="contain"
             className="w-auto h-full object-cover"
           />
         </div>

@@ -32,31 +32,31 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
 
   return (
     <div
-      className="task-item p-4 border border-slate-900 rounded m-4 bg-slate-700 text-white flex flex-col"
+      className="task-item p-4 border border-slate-400 rounded m-4 bg-slate-300 text-white flex flex-col"
       draggable
       onDragStart={handleOnDragStart}
     >
-      <p className="text-2xl font-semibold text-slate-400">
+      <p className="text-xl font-semibold text-slate-600">
         {task.content.charAt(0).toUpperCase() +
           task.content.slice(1).toLowerCase()}
       </p>
-      <p className="text-sm text-slate-500 mt-4">
+      <p className="text-xs text-slate-500 mt-4">
         created on: {new Date(Number(task.createdAt)).toLocaleString()}
       </p>
-      <p className="text-sm text-slate-500">
+      <p className="text-xs text-slate-500">
         updated on: {new Date(Number(task.updatedAt)).toLocaleString()}
       </p>
 
       <div className="mt-2 flex gap-4">
         <button
           onClick={handleOpenEditModal}
-          className="mt-2 bg-yellow-700 text-slate-400 border-2 border-slate-900 rounded-md px-4 py-1"
+          className="mt-2 bg-yellow-600 text-slate-300 border-2 border-slate-300 rounded-md px-4 py-1"
         >
           Edit
         </button>
         <button
           onClick={handleOpenEditModal}
-          className="mt-2 bg-red-700 text-slate-400 border-2 border-slate-900 rounded-md px-2 py-1"
+          className="mt-2 bg-red-600 text-slate-300 border-2 border-slate-300 rounded-md px-2 py-1"
         >
           Delete
         </button>

@@ -14,7 +14,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   onClose,
   onSubmit,
   task,
-  userId
+  userId,
 }) => {
   const [content, setContent] = React.useState(task ? task.content : "");
   const [state, setState] = React.useState(task ? task.state : TaskState.TODO);

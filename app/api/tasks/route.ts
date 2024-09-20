@@ -1,64 +1,81 @@
+// app/api/tasks/route.ts
+
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { TaskState, Task } from "@/lib/types/task";
+import clientPromise from "@/lib/mongodb"; // Your MongoDB connection utility
+import { Task } from "@/lib/types/task"; // Your Task type
+import { ObjectId } from "mongodb";
 
-let tasks: Task[] = [];
+export async function GET(req: Request) {
+  const client = await clientPromise;
+  const db = client.db("taskastra"); // Use your actual database name
+  const tasksCollection = db.collection<Task>("tasks");
 
-export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  const userId = req.url.split("?")[1]?.split("=")[1]; // Extract userId from query params
+
+  if (!userId) {
+    return NextResponse.json(
+      { message: "User ID is required" },
+      { status: 400 }
+    );
   }
+
+  const tasks = await tasksCollection.find({ userId }).toArray();
   return NextResponse.json(tasks);
 }
 
-export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  }
-  const { content } = await request.json();
+export async function POST(req: Request) {
+  const client = await clientPromise;
+  const db = client.db("taskastra");
+  const tasksCollection = db.collection<Task>("tasks");
+
+  const body = await req.json();
   const newTask: Task = {
-    _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
-    content,
-    state: TaskState.TODO,
-    userId: session.user.id as string,
+    content: body.content,
+    state: body.state,
     createdAt: Date.now().toString(),
     updatedAt: Date.now().toString(),
+    _id: new ObjectId() as unknown as string, // Ensure this is set correctly
+    userId: body.userId, // Use userId passed from the client
   };
-  tasks.push(newTask);
-  return NextResponse.json(newTask);
+
+  await tasksCollection.insertOne(newTask);
+  return NextResponse.json(newTask, { status: 201 });
 }
 
-export async function PUT(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-  }
-  const { id, content, state } = await request.json();
-  const taskIndex = tasks.findIndex(
-    (t) => t._id === id && t.userId.toString() === session.user.id
+export async function PUT(req: Request) {
+  const client = await clientPromise;
+  const db = client.db("taskastra");
+  const tasksCollection = db.collection<Task>("tasks");
+
+  const { _id, ...updatedFields } = await req.json();
+
+  const result = await tasksCollection.updateOne(
+    { _id },
+    { $set: updatedFields }
   );
-  if (taskIndex === -1) {
-    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+
+  if (result.modifiedCount === 0) {
+    return NextResponse.json(
+      { message: "Task not found or no changes made" },
+      { status: 404 }
+    );
   }
-  tasks[taskIndex] = { ...tasks[taskIndex], content, state };
-  return NextResponse.json(tasks[taskIndex]);
+
+  return NextResponse.json({ message: "Task updated successfully" });
 }
 
-export async function DELETE(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+export async function DELETE(req: Request) {
+  const client = await clientPromise;
+  const db = client.db("taskastra");
+  const tasksCollection = db.collection<Task>("tasks");
+
+  const { _id } = await req.json();
+
+  const result = await tasksCollection.deleteOne({ _id });
+
+  if (result.deletedCount === 0) {
+    return NextResponse.json({ message: "Task not found" }, { status: 404 });
   }
-  const { id } = await request.json();
-  const initialLength = tasks.length;
-  tasks = tasks.filter(
-    (t) => !(t._id === id && t.userId.toString() === session.user.id)
-  );
-  if (tasks.length === initialLength) {
-    return NextResponse.json({ error: "Task not found" }, { status: 404 });
-  }
+
   return NextResponse.json({ message: "Task deleted successfully" });
 }

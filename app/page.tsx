@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useTaskStore } from "@/lib/stores/task";
 import { TaskState } from "@/lib/types/task";
@@ -12,6 +12,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const addTask = useTaskStore((state) => state.addTask);
+  const fetchTasks = useTaskStore((state) => state.fetchTasks);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -32,6 +33,12 @@ export default function Home() {
     addTask(newTask);
     handleCloseModal();
   };
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      fetchTasks(session.user.id);
+    }
+  }, [session, fetchTasks]);
 
   return (
     <main className="bg-slate-200 h-screen flex flex-col">

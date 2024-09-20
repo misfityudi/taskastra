@@ -3,12 +3,15 @@ import { Task, TaskState } from "@/lib/types/task";
 
 interface TaskStore {
   tasks: Task[];
-  addTask: (task: Omit<Task, "_id" | "createdAt" | "updatedAt">) => void;
+  addTask: (
+    task: Omit<Task, "_id" | "createdAt" | "updatedAt">
+  ) => Promise<void>;
   updateTask: (
     _id: string,
     updatedFields: Partial<Omit<Task, "_id" | "createdAt">>
-  ) => void;
-  deleteTask: (id: string) => void;
+  ) => Promise<void>;
+  deleteTask: (id: string) => Promise<void>;
+  fetchTasks: (userId: string) => Promise<void>;
   todoTasks: Task[];
   ongoingTasks: Task[];
   completedTasks: Task[];
@@ -16,26 +19,43 @@ interface TaskStore {
 
 const useTaskStore = create<TaskStore>((set) => ({
   tasks: [],
-  addTask: (task) =>
-    set((state) => {
-      const newTask = {
-        ...task,
-        _id: `${Date.now() + Math.floor(Math.random() * 10000).toString()}`,
-        createdAt: Date.now().toString(),
-        updatedAt: Date.now().toString(),
-      };
-      return { tasks: [...state.tasks, newTask] };
-    }),
-  updateTask: (id, updatedFields) =>
+  addTask: async (task) => {
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(task),
+    });
+
+    const newTask = await response.json();
+    console.log("newTas", newTask);
+
+    set((state) => ({ tasks: [...state.tasks, newTask] }));
+  },
+  updateTask: async (id, updatedFields) => {
+    await fetch("/api/tasks", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, ...updatedFields }),
+    });
     set((state) => ({
       tasks: state.tasks.map((task) =>
         task._id === id ? { ...task, ...updatedFields } : task
       ),
-    })),
-  deleteTask: (id) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task._id !== id),
-    })),
+    }));
+  },
+  deleteTask: async (id) => {
+    await fetch("/api/tasks", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ taskId: id }),
+    });
+    set((state) => ({ tasks: state.tasks.filter((task) => task._id !== id) }));
+  },
+  fetchTasks: async (userId) => {
+    const response = await fetch(`/api/tasks?userId=${userId}`);
+    const tasks = await response.json();
+    set({ tasks });
+  },
   todoTasks: [],
   ongoingTasks: [],
   completedTasks: [],

@@ -19,7 +19,7 @@ export default function Home() {
       </header>
       <div className="flex flex-col">
         <div className="row-start-1 flex flex-row justify-between align-middle items-center h-16 px-4"></div>
-        {session?.user ? <TaskBoard userId={session?.user.id} /> : null}
+        {/* {session?.user ? <TaskBoard userId={session?.user.id} /> : null} */}
       </div>
     </main>
   );

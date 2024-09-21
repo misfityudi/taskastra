@@ -1,5 +1,5 @@
 import React from "react";
-import { Task, TaskState } from "@/lib/types/task";
+import { Task } from "@/lib/types/task";
 
 interface DeleteTaskModalProps {
   isOpen: boolean;

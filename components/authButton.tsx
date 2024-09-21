@@ -12,7 +12,7 @@ export default function AuthButton() {
         </span>
         <div
           onClick={() => signOut()}
-          className="rounded px-4 py-2 bg-red-600 border-2 border-slate-300 text-slate-300 items-center text-center cursor-pointer"
+          className="rounded-md px-4 py-2 font-medium bg-red-600 border-2 border-slate-300 text-slate-300 items-center text-center cursor-pointer"
         >
           Sign out
         </div>
@@ -22,7 +22,7 @@ export default function AuthButton() {
   return (
     <div
       onClick={() => signIn("google")}
-      className="rounded px-4 py-2 bg-blue-700 text-slate-200 items-center text-center cursor-pointer"
+      className="rounded-md px-4 py-2 font-medium bg-blue-700 text-slate-200 items-center text-center cursor-pointer"
     >
       Sign in with Google
     </div>

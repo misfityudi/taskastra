@@ -10,7 +10,7 @@ interface TaskStore {
     _id: string,
     updatedFields: Partial<Omit<Task, "_id" | "createdAt">>
   ) => Promise<void>;
-  deleteTask: (id: string) => Promise<void>;
+  deleteTask: (_id: string) => Promise<void>;
   fetchTasks: (userId: string) => Promise<void>;
   todoTasks: Task[];
   ongoingTasks: Task[];
@@ -27,7 +27,6 @@ const useTaskStore = create<TaskStore>((set) => ({
     });
 
     const newTask = await response.json();
-    console.log("newTas", newTask);
 
     set((state) => ({ tasks: [...state.tasks, newTask] }));
   },
@@ -43,13 +42,13 @@ const useTaskStore = create<TaskStore>((set) => ({
       ),
     }));
   },
-  deleteTask: async (id) => {
+  deleteTask: async (_id) => {
     await fetch("/api/tasks", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskId: id }),
+      body: JSON.stringify({ taskId: _id }),
     });
-    set((state) => ({ tasks: state.tasks.filter((task) => task._id !== id) }));
+    set((state) => ({ tasks: state.tasks.filter((task) => task._id !== _id) }));
   },
   fetchTasks: async (userId) => {
     const response = await fetch(`/api/tasks?userId=${userId}`);

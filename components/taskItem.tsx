@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Task } from "@/lib/types/task";
 import EditTaskModal from "./editTaskModal";
+import DeleteTaskModal from "./deleteTaskModal";
 import { useTaskStore } from "@/lib/stores/task";
 
 interface TaskItemProps {
@@ -9,7 +10,9 @@ interface TaskItemProps {
 
 const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const updateTask = useTaskStore((state) => state.updateTask);
+  const deleteTask = useTaskStore((state) => state.deleteTask);
 
   const handleOnDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData("taskId", task._id.toString());
@@ -23,10 +26,23 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     setIsEditModalOpen(false);
   };
 
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   const handleEditTask = (updatedTask: Task) => {
     const { _id, ...updatedFields } = updatedTask;
     updateTask(_id, updatedFields);
     handleCloseEditModal();
+  };
+
+  const handleDeleteTask = ({ _id }: Task) => {
+    deleteTask(_id);
+    handleCloseDeleteModal();
   };
 
   return (
@@ -54,7 +70,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           Edit
         </button>
         <button
-          onClick={handleOpenEditModal}
+          onClick={handleOpenDeleteModal}
           className="mt-2 bg-red-600 text-slate-300 border-2 border-slate-300 rounded-md px-2 py-1"
         >
           Delete
@@ -65,6 +81,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}
         onSubmit={handleEditTask}
+      />
+      <DeleteTaskModal
+        task={task}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onSubmit={handleDeleteTask}
       />
     </div>
   );

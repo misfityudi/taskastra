@@ -65,14 +65,14 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
             <div className="flex w-full mt-4 gap-4 justify-between">
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-700 text-slate-400 rounded-md"
+                className="px-4 py-2 font-medium bg-green-700 text-slate-400 rounded-md"
               >
                 Save
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 bg-red-700 text-slate-400 rounded-md"
+                className="px-4 py-2 font-medium bg-red-700 text-slate-400 rounded-md"
               >
                 Cancel
               </button>

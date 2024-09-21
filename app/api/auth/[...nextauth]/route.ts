@@ -28,7 +28,7 @@ declare module "next-auth/jwt" {
 }
 
 // NextAuth configuration
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,

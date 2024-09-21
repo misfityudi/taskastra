@@ -4,14 +4,7 @@ import type { NextRequest } from "next/server";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-const PUBLIC_PATHS = [
-  "/signin",
-  "/api",
-  "/_next",
-  "/images",
-  "/favicon.ico",
-  "/public",
-];
+const PUBLIC_PATHS = ["/signin"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname.startsWith(path));
@@ -39,5 +32,14 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ["/:path*"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };

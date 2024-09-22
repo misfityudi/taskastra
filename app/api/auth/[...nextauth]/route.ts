@@ -6,10 +6,9 @@ import NextAuth, {
 } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
-import clientPromise from "@/lib/mongodb"; // Assuming you have a MongoDB connection utility
-import { User } from "@/lib/types/user"; // Importing the existing User type
+import clientPromise from "@/lib/mongodb";
+import { User } from "@/lib/types/user";
 
-// Extend the Session and JWT to include user id
 declare module "next-auth" {
   interface Session {
     user: {
@@ -27,7 +26,6 @@ declare module "next-auth/jwt" {
   }
 }
 
-// NextAuth configuration
 const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -41,26 +39,22 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
     async signIn({ user }: { user: NextAuthUser }) {
       const client = await clientPromise;
-      const db = client.db("taskastra"); // Use your actual database name
+      const db = client.db("taskastra");
       const usersCollection = db.collection<User>("users");
 
       if (!user.email || !user.name) {
         throw new Error("User email or name is not available");
       }
 
-      // Check if user exists
       const existingUser = await usersCollection.findOne({ email: user.email });
 
       if (!existingUser) {
-        // Insert new user if not found
         await usersCollection.insertOne({
           _id: user.id,
           name: user.name,
@@ -70,14 +64,13 @@ const authOptions: NextAuthOptions = {
           updatedAt: new Date().toISOString(),
         });
       } else {
-        // Update the existing user with new login timestamp
         await usersCollection.updateOne(
           { email: user.email },
           { $set: { updatedAt: new Date().toISOString() } }
         );
       }
 
-      return true; // Allow sign-in
+      return true;
     },
     async session({ session }: { session: NextAuthSession }) {
       const client = await clientPromise;
@@ -93,20 +86,19 @@ const authOptions: NextAuthOptions = {
       });
 
       if (user) {
-        session.user.id = user._id.toString(); // Attach the MongoDB user ID to the session
+        session.user.id = user._id.toString();
       }
 
       return session;
     },
     async jwt({ token, account }: { token: JWT; account?: Account | null }) {
       if (account) {
-        token.id = account.providerAccountId; // Store provider account ID in the token
+        token.id = account.providerAccountId;
       }
       return token;
     },
   },
 };
 
-// Named exports for HTTP methods
 export const GET = NextAuth(authOptions);
 export const POST = NextAuth(authOptions);

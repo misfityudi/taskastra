@@ -34,14 +34,13 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleEditTask = (updatedTask: Task) => {
-    const { _id, ...updatedFields } = updatedTask;
-    updateTask(_id, updatedFields);
+  const handleEditTask = async (updatedTask: Task) => {
+    await updateTask(updatedTask);
     handleCloseEditModal();
   };
 
-  const handleDeleteTask = ({ _id }: Task) => {
-    deleteTask(_id);
+  const handleDeleteTask = async (task: Task) => {
+    await deleteTask(task);
     handleCloseDeleteModal();
   };
 

@@ -4,7 +4,7 @@ import { Task } from "@/lib/types/task";
 interface DeleteTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updatedTask: Task) => void;
+  onSubmit: (task: Task) => void;
   task: Task;
 }
 
@@ -18,6 +18,8 @@ const DeleteTaskModal: React.FC<DeleteTaskModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    console.log("task", task);
 
     onSubmit(task);
     setError(null);

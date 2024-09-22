@@ -6,11 +6,8 @@ interface TaskStore {
   addTask: (
     task: Omit<Task, "_id" | "createdAt" | "updatedAt">
   ) => Promise<void>;
-  updateTask: (
-    _id: string,
-    updatedFields: Partial<Omit<Task, "_id" | "createdAt">>
-  ) => Promise<void>;
-  deleteTask: (_id: string) => Promise<void>;
+  updateTask: (task: Task) => Promise<void>;
+  deleteTask: (task: Task) => Promise<void>;
   fetchTasks: (userId: string) => Promise<void>;
   todoTasks: Task[];
   ongoingTasks: Task[];
@@ -30,25 +27,27 @@ const useTaskStore = create<TaskStore>((set) => ({
 
     set((state) => ({ tasks: [...state.tasks, newTask] }));
   },
-  updateTask: async (id, updatedFields) => {
+  updateTask: async (updatedTask) => {
     await fetch("/api/tasks", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, ...updatedFields }),
+      body: JSON.stringify({ updatedTask }),
     });
     set((state) => ({
       tasks: state.tasks.map((task) =>
-        task._id === id ? { ...task, ...updatedFields } : task
+        task._id === updatedTask._id ? { ...updatedTask } : task
       ),
     }));
   },
-  deleteTask: async (_id) => {
+  deleteTask: async (deletedTask) => {
     await fetch("/api/tasks", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskId: _id }),
+      body: JSON.stringify({ deletedTask }),
     });
-    set((state) => ({ tasks: state.tasks.filter((task) => task._id !== _id) }));
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task._id !== deletedTask._id),
+    }));
   },
   fetchTasks: async (userId) => {
     const response = await fetch(`/api/tasks?userId=${userId}`);

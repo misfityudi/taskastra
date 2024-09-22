@@ -7,10 +7,7 @@ export default function AuthButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // Perform NextAuth signOut
     await signOut({ redirect: false });
-
-    // Clear the routing history and redirect to login page
     router.push("/login");
   };
 

@@ -5,7 +5,7 @@ export default async function Page() {
         <h1 className="text-yellow text-2xl font-extrabold">Privacy Policy</h1>
       </div>
       <span className="text-darkGrey m-4 w-11/12">
-        Effective Date: XX May, 20XX
+        Effective Date: 22 September, 2024
       </span>
       <div className="w-11/12 m-4 overflow-y-auto">
         <h2 className="text-xl font-semibold text-darkGrey mb-1">

@@ -14,7 +14,7 @@ export default function Login() {
       <div className="items-center flex flex-row w-full h-full">
         <div className="w-1/2 h-full">
           <Image
-            src="/images/login.png"
+            src="/login.png"
             alt="login_image"
             width={512}
             height={512}

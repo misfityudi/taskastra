@@ -4,7 +4,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.vercel.app",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "**",
       },
     ],
   },

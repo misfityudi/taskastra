@@ -7,20 +7,20 @@ export default function Login() {
     <main className="h-screen bg-slate-700 w-full relative">
       <Link
         href={"/"}
-        className="font-semibold text-3xl text-blue-700 absolute text-center top-8 left-12"
+        className="font-semibold text-3xl text-slate-100 absolute text-center top-8 left-12"
       >
         Taskastra
       </Link>
       <div className="items-center flex flex-row w-full h-full">
-        <div className="w-1/2 h-full">
-          <Image
+        <div className="w-1/2 h-full bg-blue-700">
+          {/* <Image
             src="/login.png"
             alt="login_image"
             width={512}
             height={512}
             priority
             className="w-auto h-full object-cover"
-          />
+          /> */}
         </div>
         <div className="w-1/2 flex flex-col text-center bg-slate-100 items-center justify-center align-middle gap-2 border h-full">
           <span className="font-semibold text-3xl text-blue-700">

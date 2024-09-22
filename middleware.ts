@@ -4,9 +4,16 @@ import type { NextRequest } from "next/server";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-async function handleProtectedRoute(req: NextRequest): Promise<NextResponse> {
+export async function middleware(req: NextRequest): Promise<NextResponse> {
   const token = await getToken({ req, secret });
+  const { pathname } = req.nextUrl;
 
+  // Allow access to the signin page even without a token
+  if (pathname === "/signin") {
+    return NextResponse.next();
+  }
+
+  // Protect other routes
   if (!token) {
     const signInUrl = new URL("/signin", req.url);
     return NextResponse.redirect(signInUrl);
@@ -15,20 +22,11 @@ async function handleProtectedRoute(req: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 
-export async function middleware(req: NextRequest): Promise<NextResponse> {
-  return handleProtectedRoute(req);
-}
-
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - signin (authentication page)
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-    "/((?!signin|api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    // Protect all routes except static files and specific Next.js paths
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+    // Protect API routes
+    "/api/:path*",
   ],
 };

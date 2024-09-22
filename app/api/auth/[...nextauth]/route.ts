@@ -35,7 +35,18 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/login",
+  },
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
     async signIn({ user }: { user: NextAuthUser }) {
       const client = await clientPromise;
       const db = client.db("taskastra"); // Use your actual database name
@@ -92,9 +103,6 @@ const authOptions: NextAuthOptions = {
         token.id = account.providerAccountId; // Store provider account ID in the token
       }
       return token;
-    },
-    async redirect({ baseUrl }: { baseUrl: string }) {
-      return baseUrl;
     },
   },
 };

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useTaskStore } from "@/lib/stores/task";
 import { TaskState } from "@/lib/types/task";
 import AuthButton from "@/components/authButton";
@@ -43,7 +44,9 @@ export default function Home() {
   return (
     <main className="bg-slate-200 h-screen flex flex-col">
       <header className="row-start-1 flex flex-row justify-between align-middle items-center h-16 px-4">
-        <span className="font-semibold text-3xl text-blue-700">Taskastra</span>
+        <Link href={"/"} className="font-semibold text-3xl text-blue-700">
+          Taskastra
+        </Link>
         <AuthButton />
       </header>
       <div className="py-1 px-3 h-screen-h-16 overflow-clip">

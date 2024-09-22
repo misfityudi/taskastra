@@ -22,6 +22,11 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
+  // Allow access to privacy page without a token
+  if (pathname === "/privacy") {
+    return NextResponse.next();
+  }
+
   // Redirect to signin if no token and trying to access a protected route
   if (!token) {
     const signInUrl = new URL("/login", req.url);

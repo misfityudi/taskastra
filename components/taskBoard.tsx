@@ -1,7 +1,7 @@
 import React from "react";
 import { useTaskStore } from "@/lib/stores/task";
 import TaskColumn from "./taskColumn";
-import { TaskState } from "@/lib/types/task";
+import { Task, TaskState } from "@/lib/types/task";
 
 const TaskBoard: React.FC = () => {
   const { tasks, updateTask } = useTaskStore();
@@ -9,10 +9,15 @@ const TaskBoard: React.FC = () => {
   const handleOnDrop = (e: React.DragEvent, targetState: TaskState) => {
     const taskId = e.dataTransfer.getData("taskId");
 
-    updateTask(taskId, {
-      state: targetState,
-      updatedAt: Date.now().toString(),
-    });
+    const currentTask = tasks.find((task) => task._id === taskId);
+    if (currentTask) {
+      const updatedTask: Task = {
+        ...currentTask,
+        state: targetState,
+      };
+
+      updateTask(updatedTask);
+    }
   };
 
   const todoTasks = tasks.filter((task) => task.state === "TODO");

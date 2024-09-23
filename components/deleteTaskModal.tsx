@@ -19,8 +19,6 @@ const DeleteTaskModal: React.FC<DeleteTaskModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("task", task);
-
     onSubmit(task);
     setError(null);
     onClose();

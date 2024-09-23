@@ -44,23 +44,33 @@ export async function PUT(req: Request) {
   const db = client.db("taskastra");
   const tasksCollection = db.collection<Task>("tasks");
 
-  const { _id, ...updatedFields } = await req.json();
-
-  if (!_id) {
-    return NextResponse.json(
-      { message: "Task ID is required" },
-      { status: 400 }
-    );
-  }
-
   try {
+    const json = await req.json();
+    const { _id, ...updatedFields } = json.updatedTask;
+
+    if (!_id) {
+      return NextResponse.json(
+        { message: "Task ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const objectId = new ObjectId(_id) as unknown as string;
+
     const result = await tasksCollection.updateOne(
-      { _id },
+      { _id: objectId },
       { $set: { ...updatedFields, updatedAt: Date.now().toString() } }
     );
 
     if (result.matchedCount === 0) {
       return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    }
+
+    if (result.modifiedCount === 0) {
+      return NextResponse.json(
+        { message: "No changes made to the task" },
+        { status: 200 }
+      );
     }
 
     return NextResponse.json({ message: "Task updated successfully" });
@@ -78,21 +88,21 @@ export async function DELETE(req: Request) {
   const db = client.db("taskastra");
   const tasksCollection = db.collection<Task>("tasks");
 
-  console.log("req", req.json());
-
-  // const { searchParams } = new URL(req.url);
-  const { _id } = await req.json();
-
-  if (!_id) {
-    return NextResponse.json(
-      { message: "Task ID is required" },
-      { status: 400 }
-    );
-  }
-
   try {
+    const json = await req.json();
+    const _id = json.deletedTask._id;
+
+    if (!_id) {
+      return NextResponse.json(
+        { message: "Task ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const objectId = new ObjectId(_id) as unknown as string;
+
     const result = await tasksCollection.deleteOne({
-      _id,
+      _id: objectId,
     });
 
     if (result.deletedCount === 0) {

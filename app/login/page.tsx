@@ -20,6 +20,12 @@ export default function Login() {
             It all starts with a to-do!
           </span>
           <AuthButton />
+          <Link
+            href={"/privacy"}
+            className="text-slate-500 underline justify-self-end mt-4"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </main>
